@@ -3,11 +3,9 @@ import java.util.Scanner;
 public class Calculator {
 
     public static Scanner scanner = new Scanner(System.in);
-    private static Boolean isStopped = false;
 
     public Calculator() {
         this.scanner = new Scanner(System.in);
-        this.isStopped = false;
     }
 
     public static void Calculate() {
@@ -16,115 +14,108 @@ public class Calculator {
                     "'*' for multiply, '/' for divide.");
             String operationSign = InputSign();
 
-            CheckStop();
-
             double a = 0;
             double b = 0;
-            double result = 0;
-            String outputResult = "Incorrect sign!";
 
             switch (operationSign) {
                 case "+" :
                     System.out.println("Enter the first addend:");
                     a = InputNumber();
-                    CheckStop();
 
                     System.out.println("Enter the second addend:");
                     b = InputNumber();
-                    CheckStop();
 
-                    result = Add(a, b);
-                    outputResult = a + " + " + b + " = " + result;
+                    Add(a, b);
                     break;
                 case "-" :
                     System.out.println("Enter the minuend:");
                     a = InputNumber();
-                    CheckStop();
 
                     System.out.println("Enter the subtrahend:");
                     b = InputNumber();
-                    CheckStop();
 
-                    result = Subtract(a, b);
-                    outputResult = a + " - " + b + " = " + result;
+                    Subtract(a, b);
                     break;
                 case "*" :
                     System.out.println("Enter the first multiplier:");
                     a = InputNumber();
-                    CheckStop();
 
                     System.out.println("Enter the second multiplier:");
                     b = InputNumber();
-                    CheckStop();
 
-                    result = Multiply(a, b);
-                    outputResult = a + " * " + b + " = " + result;
+                    Multiply(a, b);
                     break;
                 case "/" :
                     System.out.println("Enter the dividend:");
                     a = InputNumber();
-                    CheckStop();
 
                     System.out.println("Enter the divisor:");
                     b = InputNumber();
-                    CheckStop();
 
-                    result = Divide(a, b);
-                    outputResult = a + " / " + b + " = " + result;
+                    Divide(a, b);
                     break;
             }
-            System.out.println(outputResult);
         } while (true);
     }
 
     public static double InputNumber(){
-        String sInput = scanner.next();
-        double dInput = 0.0;
-        if(sInput.equals("stop")) {
-            isStopped = true;
+        double input = 0;
+        if (scanner.hasNextDouble()) {
+            input = scanner.nextDouble();
+        }
+        else if (scanner.hasNext("stop")){
+            System.out.println("The operation was stopped by the user.");
+            System.exit(0);
         }
         else {
-            try {
-                dInput = Double.valueOf(sInput);
-            } catch (NumberFormatException e) {
-                System.err.println("Uncorrected number!");
-            }
+            System.out.println("Incorrect number!");
+            scanner.next();
+            input = InputNumber();
         }
-        return dInput;
+        return input;
     }
 
     public static String InputSign(){
         String sInput = scanner.next();
         if(sInput.equals("stop")) {
-            isStopped = true;
+            System.out.println("The operation was stopped by the user.");
+            System.exit(0);
         }
         return sInput;
     }
 
-    public static void CheckStop(){
-        if(isStopped){
-            System.out.println("The operation was stopped by the user.");
-            System.exit(0);
-        }
-    }
-
-    public static double Add(double firstAddend, double secondAddend){
-        double sum = firstAddend + secondAddend;
+    public static double Add(double a, double b){
+        double sum = a + b;
+        String outputResult = a + " + " + b + " = " + sum;
+        System.out.println(outputResult);
         return sum;
     }
 
-    public static double Subtract(double minuend, double subtrahend){
-        double difference = minuend - subtrahend;
+    public static double Subtract(double a, double b){
+        double difference = a - b;
+        String outputResult = a + " - " + b + " = " + difference;
+        System.out.println(outputResult);
         return difference;
     }
 
     public static double Multiply(double a, double b){
         double product = a * b;
+        String outputResult = a + " * " + b + " = " + product;
+        System.out.println(outputResult);
         return product;
     }
 
     public static double Divide(double a, double b){
-        double quotient = a / b;
-        return quotient;
+        if(b == 0){
+            System.out.println("Can't divide by zero. Enter a non-zero divisor.");
+            b = InputNumber();
+            return Divide(a, b);
+        }
+        else{
+            double quotient = a / b;
+            String outputResult = a + " / " + b + " = " + quotient;
+            System.out.println(outputResult);
+            return quotient;
+        }
     }
 }

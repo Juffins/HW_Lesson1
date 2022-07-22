@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Дз с калькулятором
-        //Calculator.Calculate();
+        Calculator.Calculate();
 
         // Дз с циклом
         //Cycle.PrintNumbers();
